@@ -16,27 +16,49 @@
             <p class="tagline">Стиль в каждой детали</p>
         </header>
 
-        <nav class="categories" id="categories-view">
-            <div class="category-card" onclick="showCategory('glasses')">
-                <img src="images/glasses.png" alt="Очки" class="category-icon">
-                <span>Очки</span>
+        <!-- ГЛАВНЫЙ ЭКРАН: МУЖЧИНАМ / ЖЕНЩИНАМ -->
+        <nav class="gender-categories" id="gender-view">
+            <div class="category-card gender-card" onclick="showGender('men')">
+                <img src="images/men.png" alt="Мужчинам" class="category-icon">
+                <span>Мужчинам</span>
             </div>
-            <div class="category-card" onclick="showCategory('watches')">
-                <img src="images/watches.png" alt="Часы" class="category-icon">
-                <span>Часы</span>
+            <div class="category-card gender-card" onclick="showGender('women')">
+                <img src="images/women.png" alt="Женщинам" class="category-icon">
+                <span>Женщинам</span>
             </div>
         </nav>
 
+        <!-- ВТОРОЙ УРОВЕНЬ: КАТЕГОРИИ -->
+        <nav class="categories" id="categories-view" style="display: none;">
+            <button class="back-btn" onclick="showHome()">← Назад</button>
+            <h2 id="gender-title" class="section-title"></h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="showCategory('glasses')">
+                    <img src="images/glasses.png" alt="Очки" class="category-icon">
+                    <span>Очки</span>
+                </div>
+                <div class="category-card" onclick="showCategory('bracelets')">
+                    <img src="images/bracelets.png" alt="Браслеты" class="category-icon">
+                    <span>Браслеты</span>
+                </div>
+                <div class="category-card" onclick="showCategory('watches')">
+                    <img src="images/watches.png" alt="Часы" class="category-icon">
+                    <span>Часы</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ТОВАРЫ -->
         <div id="products-view" class="products-view hidden">
-            <button class="back-btn" onclick="showHome()">← Назад к каталогам</button>
-            <h2 id="category-title"></h2>
+            <button class="back-btn" onclick="showCategories()">← Назад к категориям</button>
+            <h2 id="category-title" class="section-title"></h2>
             <div id="products-grid" class="products-grid"></div>
         </div>
 
         <footer class="footer">
             <div class="contacts">
                 <h3>Связаться с нами</h3>
-                <p style="color: #888; margin-bottom: 15px;"> г. Вязники владимирская.обл | Доставка и самовывоз</p>
+                <p style="color: #888; margin-bottom: 15px;">г. Вязники, Владимирская обл. | Доставка и самовывоз</p>
                 <a href="https://t.me/AndreiShumilov12" target="_blank" class="contact-link">Telegram</a>
                 <a href="https://vk.com/theme_67" target="_blank" class="contact-link">ВКонтакте</a>
                 <a href="tel:+79049584282" class="contact-link">+7 904 958 42 82</a>
@@ -70,9 +92,9 @@
             <h2>Оформление заказа</h2>
             <p id="order-product-name" style="margin-bottom:20px; color:#aaa;"></p>
             <div class="order-contacts">
-                <a href="tel:+79049584282" class="order-contact-btn phone"> Позвонить</a>
-                <a href="https://t.me/AndreiShumilov12" target="_blank" class="order-contact-btn telegram"> Telegram</a>
-                <a href="https://vk.com/theme_67" target="_blank" class="order-contact-btn vk"> ВКонтакте</a>
+                <a href="tel:+79049584282" class="order-contact-btn phone">Позвонить</a>
+                <a href="https://t.me/AndreiShumilov12" target="_blank" class="order-contact-btn telegram">Telegram</a>
+                <a href="https://vk.com/theme_67" target="_blank" class="order-contact-btn vk">ВКонтакте</a>
             </div>
         </div>
     </div>

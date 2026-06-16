@@ -1,24 +1,36 @@
 let currentProduct = null;
 let currentImageIndex = 0;
+let currentGender = null;
 
-// Инициализация при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-    // По умолчанию показываем главную с категориями
-});
-
-function showCategory(category) {
-    const names = { 'glasses': 'Очки', 'watches': 'Часы' };
-    document.getElementById('categories-view').classList.add('hidden');
-    document.getElementById('products-view').classList.remove('hidden');
-    document.getElementById('category-title').textContent = names[category];
+function showGender(gender) {
+    currentGender = gender;
+    const names = { 'men': 'Мужчинам', 'women': 'Женщинам' };
     
-    const filtered = products.filter(p => p.category === category);
-    renderProducts(filtered);
+    document.getElementById('gender-view').style.display = 'none';
+    document.getElementById('categories-view').style.display = 'block';
+    document.getElementById('gender-title').textContent = names[gender];
 }
 
 function showHome() {
-    document.getElementById('categories-view').classList.remove('hidden');
+    document.getElementById('gender-view').style.display = 'grid';
+    document.getElementById('categories-view').style.display = 'none';
     document.getElementById('products-view').classList.add('hidden');
+}
+
+function showCategories() {
+    document.getElementById('categories-view').style.display = 'block';
+    document.getElementById('products-view').classList.add('hidden');
+}
+
+function showCategory(category) {
+    const names = { 'glasses': 'Очки', 'bracelets': 'Браслеты', 'watches': 'Часы' };
+    
+    document.getElementById('categories-view').style.display = 'none';
+    document.getElementById('products-view').classList.remove('hidden');
+    document.getElementById('category-title').textContent = names[category];
+    
+    const filtered = products.filter(p => p.gender === currentGender && p.category === category);
+    renderProducts(filtered);
 }
 
 function renderProducts(list) {
@@ -34,7 +46,6 @@ function renderProducts(list) {
         const card = document.createElement('div');
         card.className = 'product-card';
         
-        // Берем первую картинку для превью
         const mainImg = product.images && product.images.length > 0 ? product.images[0] : 'images/mdi_shop.png';
         
         let priceHTML = `<span class="price-current">${product.price.toLocaleString()} ₽</span>`;
@@ -43,7 +54,7 @@ function renderProducts(list) {
         }
 
         card.innerHTML = `
-            <img src="${mainImg}" class="product-image" alt="${product.name}">
+            <img src="${mainImg}" class="product-image" alt="${product.name}" loading="lazy">
             <div class="product-info">
                 <h3 class="product-name">${product.name}</h3>
                 <p class="product-desc">${product.description}</p>
@@ -68,7 +79,7 @@ function openProductModal(product) {
 
     renderGallery();
     document.getElementById('product-modal').classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Блокируем прокрутку фона
+    document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
@@ -79,24 +90,18 @@ function closeModal() {
 function renderGallery() {
     if (!currentProduct.images || currentProduct.images.length === 0) return;
     
-    // Обновляем главное фото
     document.getElementById('modal-image').src = currentProduct.images[currentImageIndex];
     
-    // Обновляем миниатюры
     const container = document.getElementById('modal-thumbnails');
     container.innerHTML = '';
     currentProduct.images.forEach((src, index) => {
         const thumb = document.createElement('img');
         thumb.src = src;
         thumb.className = `thumb ${index === currentImageIndex ? 'active' : ''}`;
-        thumb.onclick = () => {
-            currentImageIndex = index;
-            renderGallery();
-        };
+        thumb.onclick = () => { currentImageIndex = index; renderGallery(); };
         container.appendChild(thumb);
     });
 
-    // Скрываем стрелки, если фото всего одно
     const arrows = document.querySelectorAll('.gallery-btn');
     arrows.forEach(arrow => {
         arrow.style.display = currentProduct.images.length > 1 ? 'block' : 'none';
