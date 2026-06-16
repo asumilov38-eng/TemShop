@@ -56,7 +56,7 @@ function renderProducts(list) {
         card.innerHTML = `
             <img src="${mainImg}" class="product-image" alt="${product.name}" loading="lazy">
             <div class="product-info">
-                <h3 class="product-name">${product.name}</h3>
+                <h2 class="product-name">${product.name}</h3>
                 <p class="product-desc">${product.description}</p>
                 <div>${priceHTML}</div>
             </div>
