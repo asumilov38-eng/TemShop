@@ -35,41 +35,53 @@ function showCategory(category) {
 
 function renderProducts(list) {
     const grid = document.getElementById('products-grid');
-    grid.innerHTML = '';
     
     if (list.length === 0) {
         grid.innerHTML = '<p style="text-align:center; color:#666; grid-column:1/-1; padding:40px;">В этой категории пока нет товаров</p>';
         return;
     }
 
-    list.forEach((product, index) => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        
-        const mainImg = product.images && product.images.length > 0 ? product.images[0] : 'images/mdi_shop.png';
-        
-        let priceHTML = `<span class="price-current">${product.price.toLocaleString()} ₽</span>`;
-        if (product.oldPrice) {
-            priceHTML += `<span class="price-old">${product.oldPrice.toLocaleString()} ₽</span>`;
-        }
+    // Используем requestAnimationFrame как в DomObyve
+    requestAnimationFrame(() => {
+        grid.innerHTML = list.map((product, index) => {
+            const mainImg = product.images && product.images.length > 0 ? product.images[0] : 'images/mdi_shop.png';
+            
+            let priceHTML = `<span class="price-current">${product.price.toLocaleString()} ₽</span>`;
+            if (product.oldPrice) {
+                priceHTML += `<span class="price-old">${product.oldPrice.toLocaleString()} ₽</span>`;
+            }
 
-        // Оптимизация: первый товар грузится быстро (fetchpriority="high"), остальные - лениво
-        const priority = index === 0 ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"';
+            // Убираем loading="lazy" — грузим все фото сразу как в DomObyve
+            // Добавляем onerror fallback
+            return `
+                <div class="product-card" onclick="openProductModal(${product.id})" style="animation-delay: ${index * 0.05}s">
+                    <img src="${mainImg}" 
+                         alt="${product.name}" 
+                         class="product-image"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%231a1a1a%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23666%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3EНет фото%3C/text%3E%3C/svg%3E'">
+                    <div class="product-info">
+                        <h2 class="product-name">${product.name}</h2>
+                        <p class="product-desc">${product.description}</p>
+                        <div>${priceHTML}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
         
-        card.innerHTML = `
-            <img src="${mainImg}" class="product-image" alt="${product.name}" ${priority} decoding="async" width="400" height="400">
-            <div class="product-info">
-                <h2 class="product-name">${product.name}</h2>
-                <p class="product-desc">${product.description}</p>
-                <div>${priceHTML}</div>
-            </div>
-        `;
-        card.onclick = () => openProductModal(product);
-        grid.appendChild(card);
+        // Перезапускаем анимации
+        const cards = grid.querySelectorAll('.product-card');
+        cards.forEach(card => {
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = '';
+        });
     });
 }
 
-function openProductModal(product) {
+function openProductModal(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    
     currentProduct = product;
     currentImageIndex = 0;
     
@@ -98,24 +110,22 @@ function renderGallery() {
     modalImg.alt = currentProduct.name;
     
     const container = document.getElementById('modal-thumbnails');
-    container.innerHTML = '';
-    currentProduct.images.forEach((src, index) => {
-        const thumb = document.createElement('img');
-        thumb.src = src;
-        thumb.alt = `Фото ${index + 1}`;
-        thumb.className = `thumb ${index === currentImageIndex ? 'active' : ''}`;
-        thumb.loading = 'lazy';
-        thumb.decoding = 'async';
-        thumb.width = 60;
-        thumb.height = 60;
-        thumb.onclick = () => { currentImageIndex = index; renderGallery(); };
-        container.appendChild(thumb);
-    });
+    container.innerHTML = currentProduct.images.map((src, index) => `
+        <img src="${src}" 
+             class="thumb ${index === currentImageIndex ? 'active' : ''}" 
+             onclick="changeImageToIndex(${index})"
+             onerror="this.style.display='none'">
+    `).join('');
 
     const arrows = document.querySelectorAll('.gallery-btn');
     arrows.forEach(arrow => {
         arrow.style.display = currentProduct.images.length > 1 ? 'block' : 'none';
     });
+}
+
+function changeImageToIndex(index) {
+    currentImageIndex = index;
+    renderGallery();
 }
 
 function changeImage(direction) {
@@ -136,12 +146,29 @@ function closeOrderModal() {
     document.getElementById('order-modal').classList.add('hidden');
 }
 
+// Закрытие модалки по клику вне её или Escape
+window.onclick = function(event) {
+    const productModal = document.getElementById('product-modal');
+    const orderModal = document.getElementById('order-modal');
+    if (event.target === productModal) closeModal();
+    if (event.target === orderModal) closeOrderModal();
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+        closeOrderModal();
+    }
+});
+
 // Делаем функции видимыми для HTML
 window.showGender = showGender;
 window.showHome = showHome;
 window.showCategories = showCategories;
 window.showCategory = showCategory;
+window.openProductModal = openProductModal;
 window.closeModal = closeModal;
 window.changeImage = changeImage;
+window.changeImageToIndex = changeImageToIndex;
 window.openOrderModal = openOrderModal;
 window.closeOrderModal = closeOrderModal;
