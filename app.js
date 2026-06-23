@@ -42,7 +42,7 @@ function renderProducts(list) {
         return;
     }
 
-    list.forEach(product => {
+    list.forEach((product, index) => {
         const card = document.createElement('div');
         card.className = 'product-card';
         
@@ -53,10 +53,13 @@ function renderProducts(list) {
             priceHTML += `<span class="price-old">${product.oldPrice.toLocaleString()} ₽</span>`;
         }
 
+        // Оптимизация: первый товар грузится быстро (fetchpriority="high"), остальные - лениво
+        const priority = index === 0 ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"';
+        
         card.innerHTML = `
-            <img src="${mainImg}" class="product-image" alt="${product.name}" loading="lazy">
+            <img src="${mainImg}" class="product-image" alt="${product.name}" ${priority} decoding="async" width="400" height="400">
             <div class="product-info">
-                <h2 class="product-name">${product.name}</h3>
+                <h2 class="product-name">${product.name}</h2>
                 <p class="product-desc">${product.description}</p>
                 <div>${priceHTML}</div>
             </div>
@@ -90,14 +93,21 @@ function closeModal() {
 function renderGallery() {
     if (!currentProduct.images || currentProduct.images.length === 0) return;
     
-    document.getElementById('modal-image').src = currentProduct.images[currentImageIndex];
+    const modalImg = document.getElementById('modal-image');
+    modalImg.src = currentProduct.images[currentImageIndex];
+    modalImg.alt = currentProduct.name;
     
     const container = document.getElementById('modal-thumbnails');
     container.innerHTML = '';
     currentProduct.images.forEach((src, index) => {
         const thumb = document.createElement('img');
         thumb.src = src;
+        thumb.alt = `Фото ${index + 1}`;
         thumb.className = `thumb ${index === currentImageIndex ? 'active' : ''}`;
+        thumb.loading = 'lazy';
+        thumb.decoding = 'async';
+        thumb.width = 60;
+        thumb.height = 60;
         thumb.onclick = () => { currentImageIndex = index; renderGallery(); };
         container.appendChild(thumb);
     });
@@ -125,3 +135,13 @@ function openOrderModal() {
 function closeOrderModal() {
     document.getElementById('order-modal').classList.add('hidden');
 }
+
+// Делаем функции видимыми для HTML
+window.showGender = showGender;
+window.showHome = showHome;
+window.showCategories = showCategories;
+window.showCategory = showCategory;
+window.closeModal = closeModal;
+window.changeImage = changeImage;
+window.openOrderModal = openOrderModal;
+window.closeOrderModal = closeOrderModal;

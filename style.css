@@ -16,7 +16,6 @@ body {
 .logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 4px; color: #fff; }
 .tagline { color: #666; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; }
 
-/* Главный экран: Мужчинам / Женщинам */
 .gender-categories { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr);
@@ -58,7 +57,6 @@ body {
     display: block; 
 }
 
-/* Категории второго уровня - УЛУЧШЕННАЯ ВЕРСИЯ */
 .categories { animation: fadeIn 0.5s ease; }
 
 .category-grid { 
@@ -144,9 +142,18 @@ body {
     overflow: hidden; 
     cursor: pointer; 
     transition: 0.4s;
+    transform: translateZ(0);
+    will-change: transform;
 }
 .product-card:hover { transform: translateY(-8px); border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.product-image { width: 100%; height: 250px; object-fit: cover; background: #111; }
+.product-image { 
+    width: 100%; 
+    height: 250px; 
+    object-fit: cover; 
+    background: #111;
+    aspect-ratio: 1 / 1;
+    transform: translateZ(0);
+}
 .product-info { padding: 15px; }
 .product-name { font-size: 1.15rem; font-weight: 600; margin-bottom: 8px; }
 .product-desc { color: #888; font-size: 0.9rem; line-height: 1.4; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -158,7 +165,6 @@ body {
 .contact-link { display: block; color: #aaa; text-decoration: none; padding: 8px; transition: 0.3s; }
 .contact-link:hover { color: #fff; transform: translateX(5px); }
 
-/* Модальные окна */
 .modal {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.95); z-index: 1000;
@@ -208,7 +214,6 @@ body {
 .order-contact-btn:hover { transform: scale(1.03); opacity: 0.9; }
 .phone { background: #28a745; } .telegram { background: #0088cc; } .vk { background: #4c75a3; }
 
-/* Адаптивность - ИСПРАВЛЕННАЯ ДЛЯ ТЕЛЕФОНА */
 @media (max-width: 768px) {
     .logo { font-size: 2rem; }
     .gender-categories { grid-template-columns: 1fr; max-width: 400px; }
@@ -216,23 +221,14 @@ body {
     .gender-card .category-icon { width: 60px; height: 60px; }
     .gender-card span { font-size: 1.1rem; }
     
-    /* КАТЕГОРИИ НА ТЕЛЕФОНЕ - 3 В РЯД! */
     .category-grid { 
         grid-template-columns: repeat(3, 1fr); 
         gap: 12px;
         max-width: 100%;
     }
-    .category-card { 
-        padding: 18px 10px; 
-    }
-    .category-card .category-icon { 
-        width: 45px; 
-        height: 45px; 
-        margin-bottom: 8px;
-    }
-    .category-card span { 
-        font-size: 0.85rem; 
-    }
+    .category-card { padding: 18px 10px; }
+    .category-card .category-icon { width: 45px; height: 45px; margin-bottom: 8px; }
+    .category-card span { font-size: 0.85rem; }
     
     .products-grid { grid-template-columns: 1fr; }
     .modal-gallery { height: 300px; }
