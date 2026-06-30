@@ -2,88 +2,134 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="ТемШоп - стильные солнцезащитные очки, часы и браслеты в Вязниках. Мужские и женские аксессуары по доступным ценам.">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>ТемШоп</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    
-    <!-- Ускорение загрузки -->
+
     <link rel="preconnect" href="https://asumilov38-eng.github.io">
     <link rel="dns-prefetch" href="https://asumilov38-eng.github.io">
-    <link rel="preload" href="images/mdi_shop.png" as="image">
-    <link rel="preload" href="images/men.png" as="image">
-    <link rel="preload" href="images/women.png" as="image">
+    <link rel="preload" href="images/mdi_shop.png" as="image" fetchpriority="high">
+    <link rel="preload" href="images/men.png" as="image" fetchpriority="high">
+    <link rel="preload" href="images/women.png" as="image" fetchpriority="high">
     <link rel="preload" href="images/glasses.png" as="image">
     <link rel="preload" href="images/watches.png" as="image">
     <link rel="preload" href="images/bracelets.png" as="image">
-    
-    <link rel="stylesheet" href="style.css?v=5">
+
+    <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 
-    <div class="container">
-        <main>
-            <header class="header">
-                <img src="images/mdi_shop.png" alt="Логотип" class="site-logo" width="70" height="70" fetchpriority="high">
-                <h1 class="logo">ТемШоп</h1>
-                <p class="tagline">Стиль в каждой детали</p>
-            </header>
+    <div class="bg-glow" aria-hidden="true">
+        <div class="bg-glow__orb bg-glow__orb--1"></div>
+        <div class="bg-glow__orb bg-glow__orb--2"></div>
+    </div>
 
-            <nav class="gender-categories" id="gender-view">
-                <div class="category-card gender-card" onclick="showGender('men')">
-                    <img src="images/men.png" alt="Мужчинам" class="category-icon" width="80" height="80" loading="eager" fetchpriority="high">
-                    <span>Мужчинам</span>
-                </div>
-                <div class="category-card gender-card" onclick="showGender('women')">
-                    <img src="images/women.png" alt="Женщинам" class="category-icon" width="80" height="80" loading="eager" fetchpriority="high">
-                    <span>Женщинам</span>
-                </div>
-            </nav>
+    <div class="app">
+        <header class="app-header glass">
+            <button class="app-header__back hidden" id="header-back" onclick="handleHeaderBack()" aria-label="Назад">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="app-header__brand" onclick="showHome()">
+                <img src="images/mdi_shop.png" alt="" class="app-header__logo" width="36" height="36" fetchpriority="high">
+                <span class="app-header__title">ТемШоп</span>
+            </div>
+            <div class="app-header__spacer"></div>
+        </header>
 
-            <nav class="categories" id="categories-view" style="display: none;">
-                <button class="back-btn" onclick="showHome()">← Назад</button>
+        <main class="app-main">
+            <section class="view view--active" id="gender-view">
+                <div class="hero">
+                    <h1 class="hero__title">Выберите каталог</h1>
+                    <p class="hero__subtitle">Стиль в каждой детали</p>
+                </div>
+
+                <nav class="gender-grid">
+                    <button class="glass-card gender-card" onclick="showGender('men')">
+                        <div class="glass-card__icon-wrap">
+                            <img src="images/men.png" alt="Мужчинам" class="category-icon" width="72" height="72" loading="eager" fetchpriority="high">
+                        </div>
+                        <span class="glass-card__label">Мужчинам</span>
+                        <span class="glass-card__hint">Очки · Часы · Браслеты</span>
+                    </button>
+                    <button class="glass-card gender-card" onclick="showGender('women')">
+                        <div class="glass-card__icon-wrap">
+                            <img src="images/women.png" alt="Женщинам" class="category-icon" width="72" height="72" loading="eager" fetchpriority="high">
+                        </div>
+                        <span class="glass-card__label">Женщинам</span>
+                        <span class="glass-card__hint">Очки · Часы · Браслеты</span>
+                    </button>
+                </nav>
+            </section>
+
+            <section class="view" id="categories-view">
                 <h2 id="gender-title" class="section-title"></h2>
-                <div class="category-grid">
-                    <div class="category-card" onclick="showCategory('glasses')">
-                        <img src="images/glasses.png" alt="Очки" class="category-icon" width="60" height="60" loading="lazy">
-                        <span>Очки</span>
-                    </div>
-                    <div class="category-card" onclick="showCategory('bracelets')">
-                        <img src="images/bracelets.png" alt="Браслеты" class="category-icon" width="60" height="60" loading="lazy">
-                        <span>Браслеты</span>
-                    </div>
-                    <div class="category-card" onclick="showCategory('watches')">
-                        <img src="images/watches.png" alt="Часы" class="category-icon" width="60" height="60" loading="lazy">
-                        <span>Часы</span>
-                    </div>
-                </div>
-            </nav>
+                <nav class="category-grid">
+                    <button class="glass-card category-card" onclick="showCategory('glasses')">
+                        <div class="glass-card__icon-wrap glass-card__icon-wrap--sm">
+                            <img src="images/glasses.png" alt="Очки" class="category-icon" width="48" height="48" loading="eager">
+                        </div>
+                        <span class="glass-card__label">Очки</span>
+                    </button>
+                    <button class="glass-card category-card" onclick="showCategory('bracelets')">
+                        <div class="glass-card__icon-wrap glass-card__icon-wrap--sm">
+                            <img src="images/bracelets.png" alt="Браслеты" class="category-icon" width="48" height="48" loading="eager">
+                        </div>
+                        <span class="glass-card__label">Браслеты</span>
+                    </button>
+                    <button class="glass-card category-card" onclick="showCategory('watches')">
+                        <div class="glass-card__icon-wrap glass-card__icon-wrap--sm">
+                            <img src="images/watches.png" alt="Часы" class="category-icon" width="48" height="48" loading="eager">
+                        </div>
+                        <span class="glass-card__label">Часы</span>
+                    </button>
+                </nav>
+            </section>
 
-            <div id="products-view" class="products-view hidden">
-                <button class="back-btn" onclick="showCategories()">← Назад к категориям</button>
+            <section class="view" id="products-view">
                 <h2 id="category-title" class="section-title"></h2>
                 <div id="products-grid" class="products-grid"></div>
-            </div>
+            </section>
 
-            <footer class="footer">
-                <div class="contacts">
-                    <h3>Связаться с нами</h3>
-                    <p style="color: #888; margin-bottom: 15px;">г. Вязники, Владимирская обл. | Доставка и самовывоз</p>
-                    <a href="https://t.me/AndreiShumilov12" target="_blank" class="contact-link">Telegram</a>
-                    <a href="https://vk.com/theme_67" target="_blank" class="contact-link">ВКонтакте</a>
-                    <a href="tel:+79049584282" class="contact-link">+7 904 958 42 82</a>
+            <footer class="app-footer glass">
+                <h3 class="app-footer__title">Связаться с нами</h3>
+                <p class="app-footer__location">г. Вязники, Владимирская обл. · Доставка и самовывоз</p>
+                <div class="contact-pills">
+                    <a href="https://t.me/AndreiShumilov12" target="_blank" rel="noopener" class="contact-pill">
+                        <span class="contact-pill__dot contact-pill__dot--tg"></span>
+                        Telegram
+                    </a>
+                    <a href="https://vk.com/theme_67" target="_blank" rel="noopener" class="contact-pill">
+                        <span class="contact-pill__dot contact-pill__dot--vk"></span>
+                        ВКонтакте
+                    </a>
+                    <a href="tel:+79049584282" class="contact-pill">
+                        <span class="contact-pill__dot contact-pill__dot--phone"></span>
+                        +7 904 958 42 82
+                    </a>
                 </div>
             </footer>
         </main>
     </div>
 
     <div id="product-modal" class="modal hidden">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">&times;</button>
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-sheet glass">
+            <button class="modal-handle" onclick="closeModal()" aria-label="Закрыть">
+                <span class="modal-handle__bar"></span>
+            </button>
+            <button class="close-modal" onclick="closeModal()" aria-label="Закрыть">&times;</button>
             <div class="modal-gallery">
-                <button class="gallery-btn prev" onclick="changeImage(-1)">&#10094;</button>
+                <button class="gallery-btn prev" onclick="changeImage(-1)" aria-label="Предыдущее фото">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
                 <img id="modal-image" src="" class="modal-image" alt="" decoding="async">
-                <button class="gallery-btn next" onclick="changeImage(1)">&#10095;</button>
+                <button class="gallery-btn next" onclick="changeImage(1)" aria-label="Следующее фото">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
             </div>
             <div class="modal-thumbnails" id="modal-thumbnails"></div>
             <div class="modal-info">
@@ -96,19 +142,20 @@
     </div>
 
     <div id="order-modal" class="modal hidden">
-        <div class="modal-content order-content">
-            <button class="close-modal" onclick="closeOrderModal()">&times;</button>
-            <h2>Оформление заказа</h2>
-            <p id="order-product-name" style="margin-bottom:20px; color:#aaa;"></p>
+        <div class="modal-backdrop" onclick="closeOrderModal()"></div>
+        <div class="modal-sheet glass order-sheet">
+            <button class="close-modal" onclick="closeOrderModal()" aria-label="Закрыть">&times;</button>
+            <h2 class="order-sheet__title">Оформление заказа</h2>
+            <p id="order-product-name" class="order-sheet__product"></p>
             <div class="order-contacts">
                 <a href="tel:+79049584282" class="order-contact-btn phone">Позвонить</a>
-                <a href="https://t.me/AndreiShumilov12" target="_blank" class="order-contact-btn telegram">Telegram</a>
-                <a href="https://vk.com/theme_67" target="_blank" class="order-contact-btn vk">ВКонтакте</a>
+                <a href="https://t.me/AndreiShumilov12" target="_blank" rel="noopener" class="order-contact-btn telegram">Telegram</a>
+                <a href="https://vk.com/theme_67" target="_blank" rel="noopener" class="order-contact-btn vk">ВКонтакте</a>
             </div>
         </div>
     </div>
 
-    <script src="data.js?v=5"></script>
-    <script src="app.js?v=5"></script>
+    <script src="data.js?v=6"></script>
+    <script src="app.js?v=6"></script>
 </body>
 </html>
